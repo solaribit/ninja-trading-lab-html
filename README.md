@@ -57,6 +57,6 @@ Same as the WordPress plugin ? **GPLv3 or later**
 Feel free to fork, modify, embed, share – go wild!
 
 Made with by **solaribit** in South Africa  
-**Ninja Trading Bot Lab** – now in HTML form too!
+**Ninja Trading Bot Lab** – now available as a ![wordpress plugin](https://github.com/solaribit/ninja-trading-lab) too!
 
 ---
