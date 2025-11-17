@@ -2,7 +2,7 @@
 
 ![Ninja Trading Bot Lab](https://raw.githubusercontent.com/solaribit/ninja-trading-lab-html/refs/heads/main/ai-ninja-logo-350pxX80px.png)
 
-**Live Demo** Coming Soon
+**Live Demo** [Live Demo](https://solaribit.github.io/ninja-trading-lab-html/projection-calculator.html)
 
 ## What is this?
 
