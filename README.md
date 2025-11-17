@@ -33,9 +33,10 @@ Perfect for Notion pages, link-in-bio sites, newsletters, or just giving someone
 
 ### Enable GitHub Pages (free hosting)
 
-1. Go to repo ? **Settings** ? **Pages**
+First Fork this repository to YOURGITHUB then:
+1. Go to repo **Settings** **Pages**
 2. Source Deploy from a branch `main` ? `/ (root)`
-3. Save your calculator will be live in ~60 seconds at:  
+3. Save and your calculator will be live in ~60 seconds at:  
    https://YOURGITHUB.github.io/ninja-trading-lab-html/projection-calculator.html
 
 ## Optional: Use your own free API key (faster updates)
@@ -46,9 +47,8 @@ Perfect for Notion pages, link-in-bio sites, newsletters, or just giving someone
 
 ## Files in this repo
 
-- `ninja-trading-lab.html` the only file you need (copy-paste ready)
+- `projection-calculator.html` the only file you need (copy-paste ready)
 - `README.md` this file
-- `screenshot.png` ? (add one if you want)
 
 ## License
 
