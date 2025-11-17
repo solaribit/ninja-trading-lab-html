@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Compounding Projection Lab - Ninja Trading Bot Lab</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    :root {font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color-scheme:dark}
+    body{margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;
+         background:radial-gradient(circle at top,#1f2937,#020617)}
+    .app{width:100%;max-width:900px;background:rgba(15,23,42,.96);border-radius:18px;
+         padding:24px 26px 28px;box-shadow:0 18px 40px rgba(0,0,0,.6);color:#e5e7eb;box-sizing:border-box}
+    .header-row{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:4px}
+    h1{margin:0;font-size:1.4rem;letter-spacing:.03em}
+    .subtitle{font-size:.85rem;color:#9ca3af;margin-bottom:18px}
+    .logo-pill{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:999px;
+               background:radial-gradient(circle at top left,#22c55e,#16a34a);color:#022c22;
+               font-size:.78rem;font-weight:600;box-shadow:0 8px 18px rgba(34,197,94,.45);white-space:nowrap}
+    .logo-pill-icon{width:20px;height:20px;border-radius:999px;border:2px solid rgba(6,95,70,.6);
+                    background:radial-gradient(circle at 30% 30%,#bbf7d0,#22c55e 55%,#166534 100%);
+                    display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:700;color:#022c22}
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:16px;margin-bottom:18px}
+    .field{display:flex;flex-direction:column;gap:4px;font-size:.85rem}
+    label{color:#d1d5db}
+    input,select{background:#020617;border-radius:10px;border:1px solid #1f2937;padding:8px 10px;
+                 color:#e5e7eb;font-size:.9rem;outline:none;box-sizing:border-box}
+    input:focus,select:focus{border-color:#22c55e;box-shadow:0 0 0 1px rgba(34,197,94,.4)}
+    .presets{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px;font-size:.8rem;color:#9ca3af;align-items:center}
+    .chip{border-radius:999px;border:1px solid #1f2937;background:#020617;padding:4px 10px;cursor:pointer;user-select:none}
+    .chip:hover{border-color:#4ade80;color:#bbf7d0}
+    .actions{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:18px;flex-wrap:wrap}
+    .btn{border-radius:999px;border:none;padding:9px 18px;font-size:.9rem;cursor:pointer;font-weight:500;
+         display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+    .btn svg{display:inline-block}
+    .btn-primary{background:linear-gradient(135deg,#22c55e,#16a34a);color:#022c22;
+                 box-shadow:0 10px 25px rgba(34,197,94,.35)}
+    .btn-primary:hover{filter:brightness(1.06)}
+    .btn-ghost{background:transparent;color:#9ca3af;border:1px solid #374151}
+    .btn-ghost:hover{border-color:#22c55e;color:#bbf7d0}
+    .results{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px;font-size:.85rem;margin-bottom:18px}
+    .card{background:radial-gradient(circle at top left,#1f2937,#020617);border-radius:14px;
+          padding:10px 12px;border:1px solid #111827;box-shadow:0 12px 25px rgba(0,0,0,.45)}
+    .card h2{margin:0 0 8px;font-size:.9rem;color:#e5e7eb}
+    .stat{display:flex;justify-content:space-between;margin-bottom:4px}
+    .stat-label{color:#9ca3af}
+    .stat-value{font-variant-numeric:tabular-nums}
+    .highlight{color:#4ade80;font-weight:600}
+    .note{margin-top:10px;font-size:.78rem;color:yellow;display:flex;align-items:center;gap:4px}
+    .chart-card{margin-top:10px;padding:12px 14px 16px;border-radius:14px;
+                background:radial-gradient(circle at top right,#020617,#020617);
+                border:1px solid #111827;box-shadow:0 12px 25px rgba(0,0,0,.45)}
+    .chart-title{font-size:.9rem;margin-bottom:6px;color:#e5e7eb;display:flex;justify-content:space-between;align-items:center}
+    .chart-sub{font-size:.75rem;color:#9ca3af}
+    canvas{max-height:260px}
+    .rate-info{font-size:0.7rem;color:#6b7280;margin-top:4px;text-align:right}
+    .live-rate{font-size:0.78rem;color:#bbf7d0;margin-top:6px;text-align:right}
+    @media(max-width:640px){.app{border-radius:0;min-height:100vh}
+      .header-row{align-items:flex-start;flex-direction:column}
+      .logo-pill{align-self:flex-start}}
+    .horizontal-line {
+      border-top: 1px solid #ccc;
+      width: 100%;
+      margin: 10px 0;
+    }
+  </style>
+</head>
+<body>
+<div class="app">
+  <div class="header-row">
+    <div><h1>Trading Compounding Projection Lab</h1></div>
+    <div class="logo-pill"><div class="logo-pill-icon">NB</div><span>Ninja Trading Bot Lab</span></div>
+  </div>
+  <div class="subtitle">
+    Enter your bot assumptions and see 12 &amp; 24 month projections with optional weekly/monthly top-ups.
+  </div>
+
+  <!-- CURRENCY SELECTOR -->
+  <div class="field" style="grid-column:1/-1;">
+    <label for="currency">Currency</label>
+    <select id="currency">
+      <option value="USD" selected>$ (USD)</option>
+      <option value="GBP">£ (GBP)</option>
+      <option value="EUR">€ (EUR)</option>
+      <option value="ZAR">R (ZAR)</option>
+    </select>
+  </div>
+
+  <!-- API KEY + RATE INFO -->
+  <div class="field" style="grid-column:1/-1;">
+    <label for="apiKey"><a href="https://exchangerate-api.com" title="exchangerate-api.com" target="_blank">exchangerate-api.com</a> API key <small>(optional – live rates)</small></label>
+    <input type="password" id="apiKey" placeholder="Optional - Paste your api key here…" autocomplete="off">
+    <div class="rate-info" id="rateInfo">Rates loading…</div>
+    <div class="live-rate" id="liveRate"></div>
+    <div class="horizontal-line"></div>
+  </div>
+
+  <div class="grid">
+    <div class="field">
+      <label>Starting balance (<span id="curStart">$</span>)</label>
+      <input type="number" id="start" value="100" min="0" step="0.01">
+    </div>
+    <div class="field">
+      <label for="daily">Daily return (90day average %)</label>
+      <input type="number" id="daily" value="0.15" step="0.01">
+    </div>
+    <div class="field">
+      <label for="days">Duration (days)</label>
+      <input type="number" id="days" value="365" min="1" step="1">
+    </div>
+    <div class="field">
+      <label>Top-up amount (<span id="curTopup">$</span>)</label>
+      <input type="number" id="topup" value="10" min="0" step="0.01">
+    </div>
+    <div class="field">
+      <label for="freq">Top-up frequency</label>
+      <select id="freq">
+        <option value="0">None</option>
+        <option value="1">Daily</option>
+        <option value="7" selected>Weekly</option>
+        <option value="30">Every 30 days</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="presets">
+    Quick duration presets:
+    <span class="chip" data-days="365">12 months</span>
+    <span class="chip" data-days="730">24 months</span>
+    <span class="chip" data-days="1825">5 years</span>
+    <span class="chip" id="resetBtn">Reset to $100</span>
+  </div>
+
+  <div class="actions">
+    <button class="btn btn-primary" id="run">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M13 2 L3 14 H12 L11 22 L21 10 H12 L13 2 Z"></path>
+      </svg>
+      Run Projection
+    </button>
+    <button class="btn btn-ghost" id="runBoth">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M3 3v18h18"></path><rect x="7" y="12" width="3" height="6"></rect>
+        <rect x="12" y="9" width="3" height="9"></rect><rect x="17" y="6" width="3" height="12"></rect>
+      </svg>
+      Show 12 &amp; 24 months
+    </button>
+  </div>
+
+  <div class="results">
+    <div class="card" id="summary12">
+      <h2>12-Month Snapshot</h2>
+      <div class="stat"><span class="stat-label">Final balance</span><span class="stat-value highlight" id="final12">$0.00</span></div>
+      <div class="stat"><span class="stat-label">Total contributed</span><span class="stat-value" id="contrib12">$0.00</span></div>
+      <div class="stat"><span class="stat-label">Net profit</span><span class="stat-value" id="profit12">$0.00</span></div>
+      <div class="stat"><span class="stat-label">CAGR (approx)</span><span class="stat-value" id="cagr12">0.00 %</span></div>
+      <div class="note">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M12 2 L2 22 H22 L12 2 Z"></path><line x1="12" y1="9" x2="12" y2="13"></line><circle cx="12" cy="17" r="1"></circle>
+        </svg>
+        This is a toy projection tool: assumes constant daily %, no fees.
+      </div>
+    </div>
+    <div class="card" id="summaryCustom">
+      <h2>Custom Duration</h2>
+      <div class="stat"><span class="stat-label">Days simulated</span><span class="stat-value" id="daysOut">0</span></div>
+      <div class="stat"><span class="stat-label">Final balance</span><span class="stat-value highlight" id="finalCustom">$0.00</span></div>
+      <div class="stat"><span class="stat-label">Total contributed</span><span class="stat-value" id="contribCustom">$0.00</span></div>
+      <div class="stat"><span class="stat-label">Net profit</span><span class="stat-value" id="profitCustom">$0.00</span></div>
+      <div class="stat"><span class="stat-label">CAGR (approx)</span><span class="stat-value" id="cagrCustom">0.00 %</span></div>
+      <div class="note">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M12 2 L2 22 H22 L12 2 Z"></path><line x1="12" y1="9" x2="12" y2="13"></line><circle cx="12" cy="17" r="1"></circle>
+        </svg>
+        This is a toy projection tool: assumes constant daily %, no fees.
+      </div>
+    </div>
+  </div>
+
+  <div class="chart-card">
+    <div class="chart-title">
+      <span>Balance vs Contributions Over Time</span>
+      <span class="chart-sub" id="chartInfo">Simulated for 365 days</span>
+    </div>
+    <canvas id="projectionChart"></canvas>
+  </div>
+
+  <div class="note">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M12 2 L2 22 H22 L12 2 Z"></path><line x1="12" y1="9" x2="12" y2="13"></line><circle cx="12" cy="17" r="1"></circle>
+    </svg>
+    This is a toy projection tool: it assumes perfect execution, no fees, no slippage and constant daily %.
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  // ==================== CONFIG ====================
+  const CACHE_KEY = 'fx_rates_cache';
+  const CACHE_TTL = 12 * 60 * 60 * 1000;
+  const SUPPORTED = ['ZAR', 'USD', 'GBP', 'EUR'];
+  const SYMBOLS = { ZAR: 'R', USD: '$', GBP: '£', EUR: '€' };
+
+  // ==================== UI ELEMENTS ====================
+  const currencySelect = document.getElementById('currency');
+  const apiKeyInput = document.getElementById('apiKey');
+  const startInput = document.getElementById('start');
+  const topupInput = document.getElementById('topup');
+  const curStart = document.getElementById('curStart');
+  const curTopup = document.getElementById('curTopup');
+  const rateInfo = document.getElementById('rateInfo');
+  const liveRate = document.getElementById('liveRate');
+
+  // ==================== STATE ====================
+  let rates = {};
+  let baseCurrency = 'USD';
+  let lastUpdate = 0;
+  let apiKey = localStorage.getItem('fixer_apikey') || '';
+  let internalUSD = 100;
+  let internalTopupUSD = 10;
+
+  apiKeyInput.value = apiKey;
+  apiKeyInput.addEventListener('change', () => {
+    apiKey = apiKeyInput.value.trim();
+    localStorage.setItem('fixer_apikey', apiKey);
+    if (apiKey) fetchRates();
+  });
+
+  // ==================== CONVERSIONS ====================
+  function toInternal(amount, from) { return rates[from] ? amount / rates[from] : amount; }
+  function fromInternal(amount, to) { return rates[to] ? amount * rates[to] : amount; }
+
+  // ==================== CURRENCY CHANGE ====================
+  currencySelect.addEventListener('change', async () => {
+    baseCurrency = currencySelect.value;
+    if (!apiKey) { updateSymbols(); updateAllProjections(); return; }
+    if (Object.keys(rates).length === 0) await fetchRates();
+    startInput.value = fromInternal(internalUSD, baseCurrency).toFixed(2);
+    topupInput.value = fromInternal(internalTopupUSD, baseCurrency).toFixed(2);
+    updateSymbols();
+    updateLiveRate();
+    updateAllProjections();
+  });
+
+  // ==================== INPUTS ====================
+  startInput.addEventListener('input', () => {
+    internalUSD = toInternal(parseFloat(startInput.value) || 0, baseCurrency);
+    clearTimeout(window._recalc); window._recalc = setTimeout(updateAllProjections, 400);
+  });
+  topupInput.addEventListener('input', () => {
+    internalTopupUSD = toInternal(parseFloat(topupInput.value) || 0, baseCurrency);
+    clearTimeout(window._recalc); window._recalc = setTimeout(updateAllProjections, 400);
+  });
+  ['daily', 'days', 'freq'].forEach(id => {
+    document.getElementById(id).addEventListener('input', () => {
+      clearTimeout(window._recalc); window._recalc = setTimeout(updateAllProjections, 400);
+    });
+  });
+
+  // ==================== FORMATTING ====================
+  function formatMoney(n) {
+    return SYMBOLS[baseCurrency] + n.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  }
+  function updateSymbols() {
+    curStart.textContent = SYMBOLS[baseCurrency];
+    curTopup.textContent = SYMBOLS[baseCurrency];
+    document.querySelectorAll('[data-raw]').forEach(el => {
+      el.textContent = formatMoney(parseFloat(el.dataset.raw) || 0);
+    });
+  }
+
+  // ==================== FX + LIVE RATE ====================
+  function loadCache() {
+    const cached = localStorage.getItem(CACHE_KEY);
+    if (!cached) return null;
+    const { data, ts } = JSON.parse(cached);
+    if (Date.now() - ts < CACHE_TTL) {
+      lastUpdate = ts;
+      return data;
+    }
+    return null;
+  }
+  function saveCache(data) {
+    const ts = Date.now();
+    localStorage.setItem(CACHE_KEY, JSON.stringify({ data, ts }));
+    lastUpdate = ts;
+  }
+  async function fetchRates() {
+    if (!apiKey) {  // Note: ExchangeRate-API doesn't need a key, but we'll keep this for fallback
+      rateInfo.textContent = 'No API key – static currency only';
+      liveRate.textContent = '';
+      rates = {};
+      return;
+    }
+    const cached = loadCache();
+    if (cached) {
+      rates = cached;
+      const hoursAgo = ((Date.now() - lastUpdate) / 3600000).toFixed(1);
+      rateInfo.textContent = `Rates cached ${hoursAgo}h ago`;
+      updateLiveRate();
+      return;
+    }
+    try {
+      rateInfo.textContent = 'Fetching live rates…';
+      liveRate.textContent = '';
+      // ExchangeRate-API endpoint: No key, no symbols param, base in URL
+      const url = `https://open.er-api.com/v6/latest/USD`;  // Returns all currencies relative to USD
+      const res = await fetch(url);
+      if (!res.ok) throw new Error(`HTTP ${res.status}: Rate limit or server error`);
+      const json = await res.json();
+      if (json.result !== 'success') throw new Error(json['error-type'] || 'API error');
+      
+      // Direct rates from response (already USD-based, no conversion needed)
+      rates = json.rates || {};
+      // Ensure USD is 1
+      rates.USD = 1;
+      
+      saveCache(rates);
+      rateInfo.textContent = `Live rates @ ${new Date().toLocaleTimeString()}`;
+      updateLiveRate();
+    } catch (e) {
+      console.error('ExchangeRate-API fetch failed', e);
+      rateInfo.textContent = 'API error – using cached/offline rates';
+      liveRate.textContent = '';
+      const fallback = loadCache();
+      if (fallback) { rates = fallback; updateLiveRate(); }
+    }
+  }
+  function updateLiveRate() {
+    if (!rates[baseCurrency] || baseCurrency === 'USD') {
+      liveRate.textContent = '';
+      return;
+    }
+    const rate = rates[baseCurrency].toFixed(4);  // Direct rate (USD to base)
+    liveRate.textContent = `1 USD = ${SYMBOLS[baseCurrency]}${rate}`;
+  }
+
+  // ==================== INPUTS TO USD ====================
+  function getInputsInBase() {
+    return {
+      baseStart: internalUSD,
+      baseTopup: internalTopupUSD,
+      dailyPct: parseFloat(document.getElementById('daily').value) || 0,
+      days: parseInt(document.getElementById('days').value, 10) || 365,
+      freq: parseInt(document.getElementById('freq').value, 10) || 0
+    };
+  }
+
+  // ==================== PROJECTIONS ====================
+  function simulateProjection(baseStart, dailyPct, days, baseTopup, freqDays) {
+    const dailyRate = 1 + dailyPct / 100;
+    let balance = baseStart, contributed = baseStart;
+    for (let d = 1; d <= days; d++) {
+      balance *= dailyRate;
+      if (freqDays && d % freqDays === 0 && baseTopup > 0) {
+        balance += baseTopup;
+        contributed += baseTopup;
+      }
+    }
+    return { balance, contributed, profit: balance - contributed };
+  }
+
+  function simulateSeries(baseStart, dailyPct, days, baseTopup, freqDays) {
+    const dailyRate = 1 + dailyPct / 100;
+    let balance = baseStart, contributed = baseStart;
+    const labels = [], balances = [], contribs = [];
+    for (let d = 1; d <= days; d++) {
+      balance *= dailyRate;
+      if (freqDays && d % freqDays === 0 && baseTopup > 0) {
+        balance += baseTopup;
+        contributed += baseTopup;
+      }
+      labels.push(d);
+      balances.push(balance);
+      contribs.push(contributed);
+    }
+    return { labels, balances, contribs };
+  }
+
+  // ==================== UPDATE UI ====================
+  function updateAllProjections() {
+    const { baseStart, baseTopup, dailyPct, days, freq } = getInputsInBase();
+    const show = v => fromInternal(v, baseCurrency);
+
+    const r12 = simulateProjection(baseStart, dailyPct, 365, baseTopup, freq);
+    document.getElementById('final12').textContent = formatMoney(show(r12.balance));
+    document.getElementById('final12').dataset.raw = show(r12.balance);
+    document.getElementById('contrib12').textContent = formatMoney(show(r12.contributed));
+    document.getElementById('contrib12').dataset.raw = show(r12.contributed);
+    document.getElementById('profit12').textContent = formatMoney(show(r12.profit));
+    document.getElementById('profit12').dataset.raw = show(r12.profit);
+    document.getElementById('cagr12').textContent = ((Math.pow(r12.balance / r12.contributed, 1) - 1) * 100).toFixed(2) + ' %'; // FIXED
+
+    const rc = simulateProjection(baseStart, dailyPct, days, baseTopup, freq);
+    document.getElementById('daysOut').textContent = days;
+    document.getElementById('finalCustom').textContent = formatMoney(show(rc.balance));
+    document.getElementById('finalCustom').dataset.raw = show(rc.balance);
+    document.getElementById('contribCustom').textContent = formatMoney(show(rc.contributed));
+    document.getElementById('contribCustom').dataset.raw = show(rc.contributed);
+    document.getElementById('profitCustom').textContent = formatMoney(show(rc.profit));
+    document.getElementById('profitCustom').dataset.raw = show(rc.profit);
+    document.getElementById('cagrCustom').textContent = ((Math.pow(rc.balance / rc.contributed, 365 / days) - 1) * 100).toFixed(2) + ' %';
+
+    const series = simulateSeries(baseStart, dailyPct, days, baseTopup, freq);
+    const ctx = document.getElementById('projectionChart').getContext('2d');
+    if (window.projChart) window.projChart.destroy();
+    window.projChart = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: series.labels,
+        datasets: [
+          { label: 'Balance', data: series.balances.map(show), borderColor: '#4ade80', tension: 0.15 },
+          { label: 'Contributed', data: series.contribs.map(show), borderColor: '#94a3b8', borderDash: [5, 4], tension: 0.15 }
+        ]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: { tooltip: { callbacks: { label: c => c.dataset.label + ': ' + formatMoney(c.parsed.y) }}},
+        scales: { x: { title: { display: true, text: 'Day' }}, y: { ticks: { callback: formatMoney }}}
+      }
+    });
+    document.getElementById('chartInfo').textContent = `Simulated for ${days} days`;
+  }
+
+  // ==================== EVENT LISTENERS ====================
+  document.getElementById('run').onclick = updateAllProjections;
+  document.getElementById('runBoth').onclick = () => {
+    document.getElementById('days').value = 730;
+    updateAllProjections();
+  };
+
+  document.querySelectorAll('.chip[data-days]').forEach(c => {
+    c.onclick = () => {
+      document.getElementById('days').value = c.dataset.days;
+      updateAllProjections();
+    };
+  });
+
+  document.getElementById('resetBtn').onclick = () => {
+    internalUSD = 100;
+    internalTopupUSD = 10;
+    startInput.value = fromInternal(100, baseCurrency).toFixed(2);
+    topupInput.value = fromInternal(10, baseCurrency).toFixed(2);
+    updateAllProjections();
+  };
+
+  // ==================== INIT ====================
+  (async () => {
+    baseCurrency = currencySelect.value;
+    await fetchRates();
+    startInput.value = fromInternal(internalUSD, baseCurrency).toFixed(2);
+    topupInput.value = fromInternal(internalTopupUSD, baseCurrency).toFixed(2);
+    updateSymbols();
+    updateLiveRate();
+    updateAllProjections();
+    if (apiKey) setInterval(fetchRates, CACHE_TTL);
+  })();
+</script>
+</body>
+</html>
