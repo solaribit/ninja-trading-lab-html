@@ -42,7 +42,7 @@ First Fork this repository to YOURGITHUB then:
 ## Optional: Use your own free API key (faster updates)
 
 1. Get a free key at https://www.exchangerate-api.com
-2. Open the HTML file paste the key in the “ExchangeRate-API key” field  
+2. Open the HTML file in your browser or on the demo and paste the key in the “ExchangeRate-API key” field  
    ? rates will refresh instantly instead of daily
 
 ## Files in this repo
