@@ -1,8 +1,8 @@
 # Ninja Trading Bot Lab – Standalone HTML Version
 
-![Ninja Trading Bot Lab](https://via.placeholder.com/1200x600/0f172a/22c55e?text=Ninja+Trading+Bot+Lab+HTML+Edition)
+![Ninja Trading Bot Lab](https://raw.githubusercontent.com/solaribit/ninja-trading-lab-html/refs/heads/main/ai-ninja-logo-350pxX80px.png)
 
-**Live Demo** ? https://solaribit.github.io/ninja-trading-lab-html/ (add this once you enable GitHub Pages)
+**Live Demo** ? https://solaribit.github.io/ninja-trading-lab-html/projection-calculator.html (add this once you enable GitHub Pages)
 
 ## What is this?
 
