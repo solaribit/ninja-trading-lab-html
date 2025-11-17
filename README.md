@@ -1,4 +1,4 @@
-# Ninja Trading Bot Lab ñ Standalone HTML Version
+# Ninja Trading Bot Lab ‚Äì Standalone HTML Version
 
 ![Ninja Trading Bot Lab](https://raw.githubusercontent.com/solaribit/ninja-trading-lab-html/refs/heads/main/ai-ninja-logo-350pxX80px.png)
 
@@ -6,12 +6,12 @@
 
 ## What is this?
 
-A **single, zero-dependency HTML file** that contains the exact same beautiful compounding calculator you now have as a WordPress plugin ñ but you can open it anywhere:
+A **single, zero-dependency HTML file** that contains the exact same beautiful compounding calculator you now have as a WordPress plugin ‚Äì but you can open it anywhere:
 
 - Drop it on any web server
 - Host it on GitHub Pages (free)
 - Embed via `<iframe>`
-- Share the link with anyone ñ works offline too (after first load)
+- Share the link with anyone ‚Äì works offline too (after first load)
 
 Perfect for Notion pages, link-in-bio sites, newsletters, or just giving someone a quick calculator without installing WordPress.
 
@@ -41,7 +41,7 @@ Perfect for Notion pages, link-in-bio sites, newsletters, or just giving someone
 ## Optional: Use your own free API key (faster updates)
 
 1. Get a free key at https://www.exchangerate-api.com
-2. Open the HTML file paste the key in the ìExchangeRate-API keyî field  
+2. Open the HTML file paste the key in the ‚ÄúExchangeRate-API key‚Äù field  
    ? rates will refresh instantly instead of daily
 
 ## Files in this repo
@@ -54,9 +54,9 @@ Perfect for Notion pages, link-in-bio sites, newsletters, or just giving someone
 
 Same as the WordPress plugin ? **GPLv3 or later**
 
-Feel free to fork, modify, embed, share ñ go wild!
+Feel free to fork, modify, embed, share ‚Äì go wild!
 
 Made with by **solaribit** in South Africa  
-**Ninja Trading Bot Lab** ñ now in HTML form too!
+**Ninja Trading Bot Lab** ‚Äì now in HTML form too!
 
 ---
