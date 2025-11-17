@@ -2,7 +2,7 @@
 
 ![Ninja Trading Bot Lab](https://raw.githubusercontent.com/solaribit/ninja-trading-lab-html/refs/heads/main/ai-ninja-logo-350pxX80px.png)
 
-**Live Demo** ? Coming Soon
+**Live Demo** Coming Soon
 
 ## What is this?
 
@@ -34,20 +34,20 @@ Perfect for Notion pages, link-in-bio sites, newsletters, or just giving someone
 ### Enable GitHub Pages (free hosting)
 
 1. Go to repo ? **Settings** ? **Pages**
-2. Source ? Deploy from a branch ? `main` ? `/ (root)`
-3. Save ? your calculator will be live in ~60 seconds at:  
+2. Source Deploy from a branch `main` ? `/ (root)`
+3. Save your calculator will be live in ~60 seconds at:  
    https://solaribit.github.io/ninja-trading-lab/
 
 ## Optional: Use your own free API key (faster updates)
 
 1. Get a free key at https://www.exchangerate-api.com
-2. Open the HTML file ? paste the key in the “ExchangeRate-API key” field  
+2. Open the HTML file paste the key in the “ExchangeRate-API key” field  
    ? rates will refresh instantly instead of daily
 
 ## Files in this repo
 
-- `ninja-trading-lab.html` ? the only file you need (copy-paste ready)
-- `README.md` ? this file
+- `ninja-trading-lab.html` the only file you need (copy-paste ready)
+- `README.md` this file
 - `screenshot.png` ? (add one if you want)
 
 ## License
@@ -56,7 +56,7 @@ Same as the WordPress plugin ? **GPLv3 or later**
 
 Feel free to fork, modify, embed, share – go wild!
 
-Made with ?? by **solaribit** in South Africa  
-**Ninja Trading Bot Lab** – now in HTML form too! ??
+Made with by **solaribit** in South Africa  
+**Ninja Trading Bot Lab** – now in HTML form too!
 
 ---
