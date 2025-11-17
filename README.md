@@ -36,7 +36,7 @@ Perfect for Notion pages, link-in-bio sites, newsletters, or just giving someone
 1. Go to repo ? **Settings** ? **Pages**
 2. Source Deploy from a branch `main` ? `/ (root)`
 3. Save your calculator will be live in ~60 seconds at:  
-   https://solaribit.github.io/ninja-trading-lab/
+   https://YOURGITHUB.github.io/ninja-trading-lab-html/projection-calculator.html
 
 ## Optional: Use your own free API key (faster updates)
 
